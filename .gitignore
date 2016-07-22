@@ -1,0 +1,4 @@
+/hawkular-apm-dist-*
+apm.log
+/node_modules
+.vscode
