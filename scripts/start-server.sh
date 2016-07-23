@@ -20,12 +20,10 @@ function waitForServer {
 
 if [ ! -e ${HAWKULAR_APM} ]
 then
-  wget https://github.com/hawkular/hawkular-apm/releases/download/${VERSION}/${HAWKULAR_APM}.zip
-  unzip ${HAWKULAR_APM}.zip
+  # wget https://github.com/hawkular/hawkular-apm/releases/download/${VERSION}/${HAWKULAR_APM}.zip
+  unzip -d ${HAWKULAR_APM} ${HAWKULAR_APM}.zip
 fi
 
-sleep 3
-
-./${HAWKULAR_APM}/bin/standalone.sh -Djboss.socket.binding.port-offset=100 > apm.log 2>&1 &
+./${HAWKULAR_APM}/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Djava.net.preferIPv4Stack=true > apm.log 2>&1 &
 
 waitForServer
