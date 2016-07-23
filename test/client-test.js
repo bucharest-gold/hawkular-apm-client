@@ -27,7 +27,7 @@ let sleep = (ms) => {
 test('The client should add traces.', t => {
   let x = 1;
   const traces = [];
-  while (x <= 1000) {
+  while (x <= 100) {
     traces.push({'id': x++, 'startTime': 1469043380620});
   }
 
@@ -43,7 +43,7 @@ test('The client should get fragments.', t => {
   client({}).search(1)
     .then(x => {
       console.log(x);
-      t.equal(x.length, 1000);
+      t.equal(x.length, 100);
       t.end();
     }).catch(e => console.log(e));
 });
