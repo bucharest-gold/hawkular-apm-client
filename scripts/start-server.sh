@@ -20,7 +20,7 @@ function waitForServer {
 
 if [ ! -e ${HAWKULAR_APM} ]
 then
-  # wget https://github.com/hawkular/hawkular-apm/releases/download/${VERSION}/${HAWKULAR_APM}.zip
+  wget https://github.com/hawkular/hawkular-apm/releases/download/${VERSION}/${HAWKULAR_APM}.zip
   unzip -d ${HAWKULAR_APM} ${HAWKULAR_APM}.zip
 fi
 
