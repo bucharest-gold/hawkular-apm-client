@@ -24,6 +24,8 @@ then
   unzip ${HAWKULAR_APM}.zip
 fi
 
+sleep 3
+
 ./${HAWKULAR_APM}/bin/standalone.sh -Djboss.socket.binding.port-offset=100 > apm.log 2>&1 &
 
 waitForServer
