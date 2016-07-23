@@ -19,6 +19,11 @@
 const test = require('tape');
 let client = require('../lib/hawkular-apm-client');
 
+let sleep = (ms) => {
+  let currentTime = new Date().getTime();
+  while (currentTime + ms >= new Date().getTime()) { }
+};
+
 test('The client should add traces.', t => {
   let x = 1;
   const traces = [];
@@ -28,13 +33,13 @@ test('The client should add traces.', t => {
 
   client({}).add(traces)
     .then(x => {
-      console.log(x);
-      t.equals(1, 1);
+      t.equals(x, 200);
       t.end();
     }).catch(e => console.log(e));
 });
 
 test('The client should get fragments.', t => {
+  sleep(1500);
   client({}).search(1)
     .then(x => {
       console.log(x);
