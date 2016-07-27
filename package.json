@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "tape test/*-test.js",
-    "lint": "jshint index.js lib/*.js test/*.js",
+    "lint": "jshint index.js test/*.js",
     "format": "semistandard"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
     "lightbright": "0.0.1",
-    "request": "^2.73.0"
+    "roi": "^0.7.0"
   },
   "devDependencies": {
     "jshint": "^2.9.2",

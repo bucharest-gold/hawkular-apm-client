@@ -1,7 +1,7 @@
 /**
  * Copyright 2016 Red Hat, Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -16,4 +16,22 @@
 
 'use strict';
 
-module.exports = require('./lib/hawkular-apm-client');
+/**
+ * @module hawkular-apm-client
+ */
+module.exports = exports = {
+  add: add,
+  search: search
+};
+
+const roi = require('roi');
+
+function add (options, traces) {
+  options.endpoint = options.baseUrl + '/fragments';
+  return roi.post(options, traces);
+}
+
+function search (options, startTime) {
+  options.endpoint = options.baseUrl + '/fragments?startTime=' + startTime;
+  return roi.get(options);
+}

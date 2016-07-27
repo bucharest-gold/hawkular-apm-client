@@ -17,33 +17,38 @@
 'use strict';
 
 const test = require('tape');
-let client = require('../lib/hawkular-apm-client');
+const client = require('../index');
 
-let sleep = (ms) => {
+const sleep = (ms) => {
   let currentTime = new Date().getTime();
   while (currentTime + ms >= new Date().getTime()) { }
 };
 
-test('The client should add traces.', t => {
+const options = {
+  'baseUrl': 'http://localhost:8180/hawkular/apm',
+  'username': 'jdoe',
+  'password': 'password'
+};
+
+test('Should add traces.', t => {
   let x = 1;
   const traces = [];
-  while (x <= 100) {
+  while (x <= 3) {
     traces.push({'id': x++, 'startTime': 1469043380620});
   }
 
-  client({}).add(traces)
+  client.add(options, traces)
     .then(x => {
-      t.equals(x, 200);
+      t.equals(x.statusCode, 200);
       t.end();
     }).catch(e => console.log(e));
 });
 
-test('The client should get fragments.', t => {
-  sleep(1500);
-  client({}).search(1)
+test('Should get fragments.', t => {
+  sleep(5000);
+  client.search(options, 1)
     .then(x => {
-      console.log(x);
-      t.equal(x.length, 100);
+      t.equal(JSON.parse(x[0]).length, 3);
       t.end();
     }).catch(e => console.log(e));
 });
