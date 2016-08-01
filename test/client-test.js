@@ -24,20 +24,47 @@ const sleep = (ms) => {
   while (currentTime + ms >= new Date().getTime()) { }
 };
 
-const options = {
-  'baseUrl': 'http://localhost:8180/hawkular/apm',
-  'username': 'jdoe',
-  'password': 'password'
-};
+function getOptions () {
+  const options = {
+    'baseUrl': 'http://localhost:8180/hawkular/apm',
+    'username': 'jdoe',
+    'password': 'password'
+  };
+  return options;
+}
 
 test('Should add traces.', t => {
   let x = 1;
   const traces = [];
+  const nodes = [];
   while (x <= 3) {
-    traces.push({'id': x++, 'startTime': 1469043380620});
+    sleep(1000);
+
+    let node = {
+      'baseTime': 1,
+      'correlationIds': [],
+      'details': {},
+      'duration': 2,
+      'fault': 'false',
+      'faultDescription': 'nope',
+      'issues': [],
+      'operation': 'yup',
+      'type': 'Component',
+      'uri': 'localhost'
+    };
+    nodes.push(node);
+    let trace = {
+      'id': x++,
+      'startTime': new Date().getTime(),
+      'hostAddress': 'localhost',
+      'businessTransaction': 'foo',
+      'principal': 'bar',
+      'nodes': nodes
+    };
+    traces.push(trace);
   }
 
-  client.add(options, traces)
+  client.add(getOptions(), traces)
     .then(x => {
       t.equals(x.statusCode, 200);
       t.end();
@@ -45,11 +72,10 @@ test('Should add traces.', t => {
 });
 
 test('Should get fragments.', t => {
-  sleep(5000);
-  client.search(options, 1)
+  sleep(3000);
+  client.search(getOptions(), 1)
     .then(x => {
-      console.log(x);
-      t.equal(3, 3);
+      t.equal(JSON.parse(x).length, 3);
       t.end();
     }).catch(e => console.log(e));
 });
