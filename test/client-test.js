@@ -75,7 +75,7 @@ test('Should get fragments.', t => {
   sleep(3000);
   client.search(getOptions(), 1)
     .then(x => {
-      t.equal(JSON.parse(x).length, 3);
+      t.equal(JSON.parse(x.body).length, 3);
       t.end();
     }).catch(e => console.log(e));
 });
