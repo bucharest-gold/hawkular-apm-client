@@ -38,7 +38,6 @@ test('Should add traces.', t => {
     'id': 'd07c2b20-a77c-45a3-ae27-278a65a7233e',
     'startTime': new Date().getTime(),
     'businessTransaction': 'testhttp',
-    'hostName': 'localhost.localdomain',
     'hostAddress': '127.0.0.1',
     'nodes': [{
       'type': 'Producer',
