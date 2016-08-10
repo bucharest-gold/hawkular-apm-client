@@ -34,11 +34,25 @@ function getOptions () {
 }
 
 test('Should add traces.', t => {
-  let x = 1;
-  const traces = [];
-  const nodes = [];
+  let traces = [{
+    'id': 'd07c2b20-a77c-45a3-ae27-278a65a7233e',
+    'startTime': new Date().getTime(),
+    'businessTransaction': 'testhttp',
+    'hostName': 'localhost.localdomain',
+    'hostAddress': '127.0.0.1',
+    'nodes': [{
+      'type': 'Producer',
+      'uri': '/sayHello',
+      'operation': 'GET',
+      'baseTime': 28254188696110,
+      'duration': 9074249,
+      'endpointType': 'HTTP'}]}];
+
+  /* let x = 1
+  const traces = []
+  const nodes = []
   while (x <= 3) {
-    sleep(1000);
+    sleep(1000)
 
     let node = {
       'baseTime': 1,
@@ -51,8 +65,8 @@ test('Should add traces.', t => {
       'operation': 'yup',
       'type': 'Component',
       'uri': 'localhost'
-    };
-    nodes.push(node);
+    }
+    nodes.push(node)
     let trace = {
       'id': x++,
       'startTime': new Date().getTime(),
@@ -60,9 +74,9 @@ test('Should add traces.', t => {
       'businessTransaction': 'foo',
       'principal': 'bar',
       'nodes': nodes
-    };
-    traces.push(trace);
-  }
+    }
+    traces.push(trace)
+  }*/
 
   client.add(getOptions(), traces)
     .then(x => {
@@ -75,7 +89,7 @@ test('Should get fragments.', t => {
   sleep(3000);
   client.search(getOptions(), 1)
     .then(x => {
-      t.equal(JSON.parse(x.body).length, 3);
+      t.equal(JSON.parse(x.body).length, 1);
       t.end();
     }).catch(e => console.log(e));
 });
