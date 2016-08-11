@@ -20,15 +20,54 @@
  * @module hawkular-apm-client
  */
 module.exports = exports = {
-  add: add,
+  enable: enable,
+  disable: disable,
+  publishTraces: publishTraces,
   search: search
 };
 
+const ip = require('ip');
 const roi = require('roi');
+const lightbright = require('lightbright');
+const Timing = lightbright.builtins.timing;
 
-function add (options, traces) {
+function enable () {
+  lightbright.addFilter(Timing.timer);
+  lightbright.enable();
+}
+
+function disable () {
+  lightbright.disable();
+}
+
+function traces (t) {
+  let traces = [];
+  const hostAddress = ip.address();
+  t.forEach(e => {
+    traces.push({
+      'id': e.id,
+      'startTime': new Date().getTime(),
+      'businessTransaction': e.location,
+      'hostAddress': hostAddress,
+      'nodes': [{
+        'type': 'Producer',
+        'uri': '/hail',
+        'operation': 'GET',
+        'baseTime': 28254188696110,
+        'duration': e.elapsed,
+        'endpointType': 'HTTP'
+      }]
+    });
+  });
+
+  return traces;
+}
+
+function publishTraces (options) {
+  let t = Timing.timings();
+  console.log(traces(t));
   options.endpoint = options.baseUrl + '/fragments';
-  return roi.post(options, traces);
+  return roi.post(options, traces(t));
 }
 
 function search (options, startTime) {
