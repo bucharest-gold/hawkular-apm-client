@@ -1,4 +1,5 @@
 ci: test
+	npm run prepublish
 
 test: lint
 	npm test

@@ -47,37 +47,7 @@ test('Should add traces.', t => {
       'duration': 9074249,
       'endpointType': 'HTTP'}]}];
 
-  /* let x = 1
-  const traces = []
-  const nodes = []
-  while (x <= 3) {
-    sleep(1000)
-
-    let node = {
-      'baseTime': 1,
-      'correlationIds': [],
-      'details': {},
-      'duration': 2,
-      'fault': 'false',
-      'faultDescription': 'nope',
-      'issues': [],
-      'operation': 'yup',
-      'type': 'Component',
-      'uri': 'localhost'
-    }
-    nodes.push(node)
-    let trace = {
-      'id': x++,
-      'startTime': new Date().getTime(),
-      'hostAddress': 'localhost',
-      'businessTransaction': 'foo',
-      'principal': 'bar',
-      'nodes': nodes
-    }
-    traces.push(trace)
-  }*/
-
-  client.add(getOptions(), traces)
+  client.publishTraces(getOptions(), traces)
     .then(x => {
       t.equals(x.statusCode, 200);
       t.end();
