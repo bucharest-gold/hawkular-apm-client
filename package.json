@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tape test/*-test.js",
     "prepublish": "nsp check",
-    "lint": "eslint index test/*.js",
+    "lint": "eslint index.js test/*.js",
     "format": "semistandard"
   },
   "author": "",
