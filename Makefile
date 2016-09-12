@@ -2,11 +2,10 @@ ci: test
 	npm run prepublish
 
 test: lint
-	npm test
+	npm run test
 
 lint: node_modules
 	npm run lint
-	npm run format
 
 clean:
 	rm -rf node_modules
