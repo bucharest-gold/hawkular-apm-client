@@ -23,7 +23,8 @@ then
   wget https://github.com/hawkular/hawkular-apm/releases/download/${VERSION}/${HAWKULAR_APM}.zip
   unzip -d ${HAWKULAR_APM} ${HAWKULAR_APM}.zip
 fi
-
+chmod +x ./${HAWKULAR_APM}/apm/setenv.sh
+./${HAWKULAR_APM}/apm/setenv.sh
 ./${HAWKULAR_APM}/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Djava.net.preferIPv4Stack=true > apm.log 2>&1 &
 
 waitForServer
