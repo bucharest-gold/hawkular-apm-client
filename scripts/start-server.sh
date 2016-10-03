@@ -6,7 +6,7 @@ function waitForServer {
   C=50
   while [ $C -gt 0 ]
   do
-    grep "Admin console listening on http://127.0.0.1:10090" apm.log
+    grep "WildFly Full 10.0.0.Final (WildFly Core 2.0.10.Final) started" apm.log
     if [ $? -eq 0 ]; then
       echo "Server started."
       C=0
@@ -18,13 +18,17 @@ function waitForServer {
   done
 }
 
+# docker pull jboss/hawkular-apm-server
+# docker run -p 8080:8080 jboss/hawkular-apm-server > apm.log 2>&1 &
+# waitForServer
+# rm auth.txt
+# grep "Username" apm.log > auth.txt
+# grep "Password" apm.log >> auth.txt
+
 if [ ! -e ${HAWKULAR_APM} ]
 then
   wget https://github.com/hawkular/hawkular-apm/releases/download/${VERSION}/${HAWKULAR_APM}.zip
   unzip -d ${HAWKULAR_APM} ${HAWKULAR_APM}.zip
 fi
-chmod +x ./${HAWKULAR_APM}/apm/setenv.sh
-./${HAWKULAR_APM}/apm/setenv.sh
-./${HAWKULAR_APM}/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Djava.net.preferIPv4Stack=true > apm.log 2>&1 &
-
+./${HAWKULAR_APM}/bin/standalone.sh -Djava.net.preferIPv4Stack=true > apm.log 2>&1 &
 waitForServer

@@ -66,11 +66,11 @@ function traces (t) {
 function publishTraces (options) {
   let t = Timing.timings();
   console.log(traces(t));
-  options.endpoint = options.baseUrl + '/fragments';
+  console.log(options);
   return roi.post(options, traces(t));
 }
 
 function search (options, startTime) {
-  options.endpoint = options.baseUrl + '/fragments?startTime=' + startTime;
+  options.endpoint = options.endpoint + '?startTime=' + startTime;
   return roi.get(options);
 }

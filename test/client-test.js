@@ -16,22 +16,26 @@
 
 'use strict';
 
+// const fs = require('fs');
+// const path = require('path');
 const test = require('tape');
 const client = require('../index');
 
-const sleep = (ms) => {
-  let currentTime = new Date().getTime();
-  while (currentTime + ms >= new Date().getTime()) { }
-};
+// let username = '';
+// let password = '';
 
-function getOptions () {
-  const options = {
-    'baseUrl': 'http://localhost:8180/hawkular/apm',
-    'username': 'jdoe',
-    'password': 'password'
-  };
-  return options;
-}
+// function getUsernameAndPassword () {
+//   const lines = fs.readFileSync(path.join(__dirname, '../auth.txt')).toString().split('\n');
+//   username = lines[0].split(':')[1].trim();
+//   password = lines[1].split(':')[1].trim();
+// }
+
+// getUsernameAndPassword();
+
+// const sleep = (ms) => {
+//   let currentTime = new Date().getTime();
+//   while (currentTime + ms >= new Date().getTime()) { }
+// };
 
 test('Should add traces.', t => {
   let traces = [{
@@ -47,18 +51,32 @@ test('Should add traces.', t => {
       'duration': 9074249,
       'endpointType': 'HTTP'}]}];
 
-  client.publishTraces(getOptions(), traces)
+  const options = {
+    'endpoint': 'http://localhost:8080/hawkular/apm/fragments',
+    'username': 'jdoe',
+    'password': 'password'
+  };
+
+  client.publishTraces(options, traces)
     .then(x => {
+      console.log(x);
       t.equals(x.statusCode, 200);
       t.end();
     }).catch(e => console.log(e));
 });
 
-test('Should get fragments.', t => {
-  sleep(3000);
-  client.search(getOptions(), 1)
-    .then(x => {
-      t.equal(JSON.parse(x.body).length, 1);
-      t.end();
-    }).catch(e => console.log(e));
-});
+// test('Should get fragments.', t => {
+//   sleep(3000);
+
+//   const options = {
+//     'endpoint': 'http://localhost:8080/hawkular/apm/fragments',
+//     'username': 'jdoe',
+//     'password': 'password'
+//   };
+
+//   client.search(options, 1)
+//     .then(x => {
+//       t.equal(JSON.parse(x.body).length, 1);
+//       t.end();
+//     }).catch(e => console.log(e));
+// });

@@ -2,3 +2,4 @@ hawkular-apm-dist-*
 *.log
 node_modules
 .vscode
+auth.txt
