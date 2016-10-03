@@ -16,21 +16,21 @@
 
 'use strict';
 
-// const fs = require('fs');
-// const path = require('path');
+const fs = require('fs');
+const path = require('path');
 const test = require('tape');
 const client = require('../index');
 
-// let username = '';
-// let password = '';
+let username = '';
+let password = '';
 
-// function getUsernameAndPassword () {
-//   const lines = fs.readFileSync(path.join(__dirname, '../auth.txt')).toString().split('\n');
-//   username = lines[0].split(':')[1].trim();
-//   password = lines[1].split(':')[1].trim();
-// }
+function getUsernameAndPassword () {
+  const lines = fs.readFileSync(path.join(__dirname, '../auth.txt')).toString().split('\n');
+  username = lines[0].split(':')[1].trim();
+  password = lines[1].split(':')[1].trim();
+}
 
-// getUsernameAndPassword();
+getUsernameAndPassword();
 
 // const sleep = (ms) => {
 //   let currentTime = new Date().getTime();
@@ -53,8 +53,8 @@ test('Should add traces.', t => {
 
   const options = {
     'endpoint': 'http://localhost:8080/hawkular/apm/fragments',
-    'username': 'jdoe',
-    'password': 'password'
+    'username': username,
+    'password': password
   };
 
   client.publishTraces(options, traces)
