@@ -26,8 +26,11 @@ module.exports = exports = {
   search: search
 };
 
-// const ip = require('ip');
+// We need this to get the machine IP address.
+const ip = require('ip');
+// We need this to send data to hawkular-apm-server.
 const roi = require('roi');
+// We need this to get the node traces.
 const lightbright = require('lightbright');
 const Timing = lightbright.builtins.timing;
 
@@ -40,32 +43,32 @@ function disable () {
   lightbright.disable();
 }
 
-// function traces (t) {
-//   let traces = [];
-//   const hostAddress = ip.address();
-//   t.forEach(e => {
-//     traces.push({
-//       'id': e.id,
-//       'startTime': new Date().getTime(),
-//       'businessTransaction': e.location,
-//       'hostAddress': hostAddress,
-//       'nodes': [{
-//         'type': 'Producer',
-//         'uri': '/hail',
-//         'operation': 'GET',
-//         'baseTime': 1475599562374,
-//         'duration': e.elapsed,
-//         'endpointType': 'HTTP'
-//       }]
-//     });
-//   });
+function traces (t) {
+  let traces = [];
+  const hostAddress = ip.address();
+  t.forEach(e => {
+    traces.push({
+      'id': e.id,
+      'startTime': new Date().getTime(),
+      'businessTransaction': e.location,
+      'hostAddress': hostAddress,
+      'nodes': [{
+        'type': 'Producer',
+        'uri': '/hail',
+        'operation': 'GET',
+        'baseTime': 1475599562374,
+        'duration': e.elapsed,
+        'endpointType': 'HTTP'
+      }]
+    });
+  });
 
-//   return traces;
-// }
+  return traces;
+}
 
-function publishTraces (options, traces) {
-  // let t = Timing.timings();
-  // console.log(t);
+function publishTraces (options) {
+  let t = Timing.timings();
+  console.log(traces(t));
   return roi.post(options, traces);
 }
 
