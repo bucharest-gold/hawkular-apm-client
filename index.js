@@ -26,7 +26,7 @@ module.exports = exports = {
   search: search
 };
 
-const ip = require('ip');
+// const ip = require('ip');
 const roi = require('roi');
 const lightbright = require('lightbright');
 const Timing = lightbright.builtins.timing;
@@ -40,34 +40,33 @@ function disable () {
   lightbright.disable();
 }
 
-function traces (t) {
-  let traces = [];
-  const hostAddress = ip.address();
-  t.forEach(e => {
-    traces.push({
-      'id': e.id,
-      'startTime': new Date().getTime(),
-      'businessTransaction': e.location,
-      'hostAddress': hostAddress,
-      'nodes': [{
-        'type': 'Producer',
-        'uri': '/hail',
-        'operation': 'GET',
-        'baseTime': 28254188696110,
-        'duration': e.elapsed,
-        'endpointType': 'HTTP'
-      }]
-    });
-  });
+// function traces (t) {
+//   let traces = [];
+//   const hostAddress = ip.address();
+//   t.forEach(e => {
+//     traces.push({
+//       'id': e.id,
+//       'startTime': new Date().getTime(),
+//       'businessTransaction': e.location,
+//       'hostAddress': hostAddress,
+//       'nodes': [{
+//         'type': 'Producer',
+//         'uri': '/hail',
+//         'operation': 'GET',
+//         'baseTime': 1475599562374,
+//         'duration': e.elapsed,
+//         'endpointType': 'HTTP'
+//       }]
+//     });
+//   });
 
-  return traces;
-}
+//   return traces;
+// }
 
-function publishTraces (options) {
-  let t = Timing.timings();
-  console.log(traces(t));
-  console.log(options);
-  return roi.post(options, traces(t));
+function publishTraces (options, traces) {
+  // let t = Timing.timings();
+  // console.log(t);
+  return roi.post(options, traces);
 }
 
 function search (options, startTime) {
