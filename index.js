@@ -43,7 +43,7 @@ function disable () {
   lightbright.disable();
 }
 
-function traces (t) {
+function apmTraces (t) {
   let traces = [];
   const hostAddress = ip.address();
   t.forEach(e => {
@@ -54,25 +54,24 @@ function traces (t) {
       'hostAddress': hostAddress,
       'nodes': [{
         'type': 'Producer',
-        'uri': '/hail',
+        'uri': '/hello',
         'operation': 'GET',
-        'baseTime': 1475599562374,
+        'baseTime': 28254188696110,
         'duration': e.elapsed,
         'endpointType': 'HTTP'
       }]
     });
   });
-
   return traces;
 }
 
 function publishTraces (options) {
-  let t = Timing.timings();
-  console.log(traces(t));
+  let traces = apmTraces(Timing.timings());
+  console.log(traces);
   return roi.post(options, traces);
 }
 
 function search (options, startTime) {
-  options.endpoint = options.endpoint + '?startTime=' + startTime;
+  options.endpoint.concat('?startTime=' + startTime);
   return roi.get(options);
 }

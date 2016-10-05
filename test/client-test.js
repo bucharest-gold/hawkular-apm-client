@@ -17,39 +17,52 @@
 'use strict';
 
 const test = require('tape');
-const client = require('../index');
+// const client = require('../index');
+const roi = require('roi');
 
 // const sleep = (ms) => {
 //   let currentTime = new Date().getTime();
 //   while (currentTime + ms >= new Date().getTime()) { }
 // };
 
-test('Should add traces.', t => {
-  let traces = [{
-    'id': 'd07c2b20-a77c-45a3-ae27-278a65a7233e',
-    'startTime': new Date().getTime(),
-    'businessTransaction': 'testhttp',
-    'hostAddress': '127.0.0.1',
-    'nodes': [{
-      'type': 'Producer',
-      'uri': '/sayHello',
-      'operation': 'GET',
-      'baseTime': 1475599562374,
-      'duration': 9074249,
-      'endpointType': 'HTTP'}]}];
-
+test('Should access the fake app to catch traces.', t => {
   const options = {
-    'endpoint': 'http://localhost:8080/hawkular/apm/traces/fragments',
-    'username': 'jdoe',
-    'password': 'password'
+    'endpoint': 'http://localhost:3000/hello'
   };
 
-  client.publishTraces(options, traces)
+  roi.get(options)
     .then(x => {
       t.equals(x.statusCode, 200);
       t.end();
     }).catch(e => console.log(e));
 });
+
+// test('Should add traces.', t => {
+//   let traces = [{
+//     'id': 'd07c2b20-a77c-45a3-ae27-278a65a7233e',
+//     'startTime': new Date().getTime(),
+//     'businessTransaction': 'testhttp',
+//     'hostAddress': '127.0.0.1',
+//     'nodes': [{
+//       'type': 'Producer',
+//       'uri': '/sayHello',
+//       'operation': 'GET',
+//       'baseTime': 1475599562374,
+//       'duration': 9074249,
+//       'endpointType': 'HTTP'}]}];
+
+//   const options = {
+//     'endpoint': 'http://localhost:8080/hawkular/apm/traces/fragments',
+//     'username': 'jdoe',
+//     'password': 'password'
+//   };
+
+//   client.publishTraces(options, traces)
+//     .then(x => {
+//       t.equals(x.statusCode, 200);
+//       t.end();
+//     }).catch(e => console.log(e));
+// });
 
 // test('Should get fragments.', t => {
 //   sleep(3000);
