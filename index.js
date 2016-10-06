@@ -43,20 +43,34 @@ function disable () {
   lightbright.disable();
 }
 
-function apmTraces (lightbrightTraces) {
+function getOperation (type, location) {
+  let operation = '';
+  if (type === 'Component') {
+    operation = location;
+  } else {
+    // GET/POST/etc ?
+    operation = 'GET';
+  }
+  return operation;
+}
+
+function apmTraces (options, lightbrightTraces) {
   let traces = [];
   const hostAddress = ip.address();
+
+  let type = options.type || 'Component';
+  let uri = options.uri || '';
+
   lightbrightTraces.forEach(t => {
     traces.push({
       'id': t.id,
       'startTime': new Date().getTime(),
-      'businessTransaction': t.location,
       'hostAddress': hostAddress,
       'nodes': [{
-        'type': 'Producer',
-        'uri': '/hello',
-        'operation': 'GET',
-        'baseTime': 28254188696110,
+        'type': type,
+        'uri': uri,
+        'operation': getOperation(type, t.location),
+        'baseTime': process.hrtime()[1], // nanoseconds
         'duration': t.elapsed,
         'endpointType': 'HTTP'
       }]
@@ -66,7 +80,7 @@ function apmTraces (lightbrightTraces) {
 }
 
 function publishTraces (options) {
-  let traces = apmTraces(Timing.timings());
+  let traces = apmTraces(options, Timing.timings());
   return roi.post(options, traces);
 }
 

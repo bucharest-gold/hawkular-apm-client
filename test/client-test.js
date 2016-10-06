@@ -17,7 +17,7 @@
 'use strict';
 
 const test = require('tape');
-const hawkularApmClient = require('../index');
+const apm = require('../index');
 const roi = require('roi');
 
 const sleep = (ms) => {
@@ -46,9 +46,8 @@ test('Should access hawkular server to check if traces was added.', t => {
     'password': 'password'
   };
 
-  hawkularApmClient.search(options, 1)
+  apm.search(options, 1)
     .then(x => {
-      console.log(JSON.stringify(x, null, 2));
       t.equal(JSON.parse(x.body).length > 0, true);
       t.end();
     }).catch(e => console.log(e));
