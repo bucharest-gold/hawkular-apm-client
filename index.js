@@ -43,21 +43,21 @@ function disable () {
   lightbright.disable();
 }
 
-function apmTraces (t) {
+function apmTraces (lightbrightTraces) {
   let traces = [];
   const hostAddress = ip.address();
-  t.forEach(e => {
+  lightbrightTraces.forEach(t => {
     traces.push({
-      'id': e.id,
+      'id': t.id,
       'startTime': new Date().getTime(),
-      'businessTransaction': e.location,
+      'businessTransaction': t.location,
       'hostAddress': hostAddress,
       'nodes': [{
         'type': 'Producer',
         'uri': '/hello',
         'operation': 'GET',
         'baseTime': 28254188696110,
-        'duration': e.elapsed,
+        'duration': t.elapsed,
         'endpointType': 'HTTP'
       }]
     });
@@ -67,7 +67,6 @@ function apmTraces (t) {
 
 function publishTraces (options) {
   let traces = apmTraces(Timing.timings());
-  console.log(traces);
   return roi.post(options, traces);
 }
 

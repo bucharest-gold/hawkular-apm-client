@@ -17,13 +17,13 @@
 'use strict';
 
 const test = require('tape');
-// const client = require('../index');
+const hawkularApmClient = require('../index');
 const roi = require('roi');
 
-// const sleep = (ms) => {
-//   let currentTime = new Date().getTime();
-//   while (currentTime + ms >= new Date().getTime()) { }
-// };
+const sleep = (ms) => {
+  let currentTime = new Date().getTime();
+  while (currentTime + ms >= new Date().getTime()) { }
+};
 
 test('Should access the fake app to catch traces.', t => {
   const options = {
@@ -37,45 +37,19 @@ test('Should access the fake app to catch traces.', t => {
     }).catch(e => console.log(e));
 });
 
-// test('Should add traces.', t => {
-//   let traces = [{
-//     'id': 'd07c2b20-a77c-45a3-ae27-278a65a7233e',
-//     'startTime': new Date().getTime(),
-//     'businessTransaction': 'testhttp',
-//     'hostAddress': '127.0.0.1',
-//     'nodes': [{
-//       'type': 'Producer',
-//       'uri': '/sayHello',
-//       'operation': 'GET',
-//       'baseTime': 1475599562374,
-//       'duration': 9074249,
-//       'endpointType': 'HTTP'}]}];
+test('Should access hawkular server to check if traces was added.', t => {
+  sleep(3000);
 
-//   const options = {
-//     'endpoint': 'http://localhost:8080/hawkular/apm/traces/fragments',
-//     'username': 'jdoe',
-//     'password': 'password'
-//   };
+  const options = {
+    'endpoint': 'http://localhost:8080/hawkular/apm/traces/fragments/search',
+    'username': 'jdoe',
+    'password': 'password'
+  };
 
-//   client.publishTraces(options, traces)
-//     .then(x => {
-//       t.equals(x.statusCode, 200);
-//       t.end();
-//     }).catch(e => console.log(e));
-// });
-
-// test('Should get fragments.', t => {
-//   sleep(3000);
-
-//   const options = {
-//     'endpoint': 'http://localhost:8080/hawkular/apm/traces/fragments/search',
-//     'username': 'jdoe',
-//     'password': 'password'
-//   };
-
-//   client.search(options, 1)
-//     .then(x => {
-//       t.equal(JSON.parse(x.body).length, 1);
-//       t.end();
-//     }).catch(e => console.log(e));
-// });
+  hawkularApmClient.search(options, 1)
+    .then(x => {
+      console.log(JSON.stringify(x, null, 2));
+      t.equal(JSON.parse(x.body).length > 0, true);
+      t.end();
+    }).catch(e => console.log(e));
+});
