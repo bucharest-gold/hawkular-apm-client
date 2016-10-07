@@ -18,18 +18,18 @@ Discussions can be done via github issues or IRC channel #brass-monkey.
 Fork the project [on GitHub](https://github.com/bucharest-gold/hawkular-apm-client)
 and check out your copy locally.
 
-```shell
-$ git clone git@github.com:username/hawkular-apm-client.git
-$ cd hawkular-apm-client
-$ git remote add upstream https://github.com/bucharest-gold/hawkular-apm-client.git
+```
+git clone git@github.com:username/hawkular-apm-client.git
+cd hawkular-apm-client
+git remote add upstream https://github.com/bucharest-gold/hawkular-apm-client.git
 ```
 
 ### Branch
 
 Create a feature branch and start hacking:
 
-```shell
-$ git checkout -b my-contrib-branch
+```
+git checkout -b my-contrib-branch
 ```
 
 ### Commit messages
@@ -62,42 +62,46 @@ nicely even when it is indented.
 
 Use `git rebase` to sync your work from time to time.
 
-```shell
-$ git fetch upstream
-$ git rebase upstream/master
+```
+git fetch upstream
+git rebase upstream/master
 ```
 
-### Start server | Code - Test | Stop server
+### Development cycle
 
-Bug fixes and features should come with tests. Add your tests in the
-`test/client-test.js` file.
+Bug fixes and features should come with tests.
+The tests are on `test` directory.
 
-So run this script:
+Open a terminal and type:
 
-```shell
-$ ./scripts/start-server.sh
+(The PID of this node process will be on console and pid.txt file,
+useful to kill the process -- kill -9 PID)
+
 ```
-This will download and start Hawkular apm server.
-
-Then you can start coding and watching the results of the tests with this command:
-
-```shell
-$ make
+node test/app-fixture.js &
 ```
 
-To stop the server you can run this script:
+Open another terminal and type:
 
-```shell
-$ ./scripts/stop-server.sh
+```
+./scripts/start-server.sh
+make
 ```
 
-Make sure the jshint and semistandard are happy and that all tests pass. Please, do not submit
-patches that fail either check.
+This will pull a hawkular docker image with default user (jdoe) and password (password).
 
-### Step 6: Push
+The make command will run lint and tests.
 
-```shell
-$ git push origin my-contrib-branch
+If you want clean the hawkular apm server run:
+
+```
+./scripts/stop-server.sh
+```
+
+### Push
+
+```
+git push origin my-contrib-branch
 ```
 
 Go to https://github.com/yourusername/hawkular-apm-client and select your feature branch.

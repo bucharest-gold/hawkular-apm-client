@@ -1,8 +1,9 @@
-ci: test
-	npm run prepublish
-
 test: lint
-	npm run test
+	npm test
+
+ci: test
+	npm run coverage
+	npm run dependencyCheck
 
 lint: node_modules
 	npm run lint

@@ -16,9 +16,6 @@
 
 'use strict';
 
-/**
- * @module hawkular-apm-client
- */
 module.exports = exports = {
   enable: enable,
   disable: disable,
@@ -26,11 +23,8 @@ module.exports = exports = {
   search: search
 };
 
-// We need this to get the machine IP address.
 const ip = require('ip');
-// We need this to send data to hawkular-apm-server.
 const roi = require('roi');
-// We need this to get the node traces.
 const lightbright = require('lightbright');
 const Timing = lightbright.builtins.timing;
 
@@ -49,8 +43,10 @@ function getOperation (type, location) {
     operation = location;
   } else {
     // GET/POST/etc ?
-    operation = 'GET';
+    // operation = 'GET';
+    operation = location;
   }
+  console.log(operation);
   return operation;
 }
 
