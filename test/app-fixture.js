@@ -39,7 +39,7 @@ server.route({
       'type': 'Producer',
       'uri': '/hello'
     };
-    apm.publishTraces(options).then(x => console.log('Traces added to hawkular-apm-server.')).catch(e => console.log(e));
+    apm.send(options).then(x => console.log('Traces added to hawkular-apm-server.')).catch(e => console.log(e));
     return reply('Go to: <a href="http://localhost:8080/hawkular-ui/apm">http://localhost:8080/hawkular-ui/apm</a>');
   }
 });

@@ -19,7 +19,7 @@
 module.exports = exports = {
   enable: enable,
   disable: disable,
-  publishTraces: publishTraces,
+  send: send,
   search: search
 };
 
@@ -75,7 +75,7 @@ function apmTraces (options, lightbrightTraces) {
   return traces;
 }
 
-function publishTraces (options) {
+function send (options) {
   let traces = apmTraces(options, Timing.timings());
   return roi.post(options, traces);
 }
